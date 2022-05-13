@@ -1,0 +1,16 @@
+CJ TRACKING CODE LICENSE
+
+Copyright 2020, WP Overwatch LLC.
+Changes to this license by anyone other than WP Overwatch LLC. are not allowed.
+
+
+TERMS AND CONDITIONS
+
+You agree to the terms and conditions of the GPL General Public License located with your
+copy of this plugin under the filename gpl-3.0.txt with the following added restriction:
+
+Unless expressly allowed by WP Overwatch LLC., any modification to this plugin must keep all attributions
+pertaining to the authorship of this plugin including all links to hostingutilities.com, and a notice is to be
+appended or prepended to each attribution to differentiate the plugin as being a modified version of the original.
+
+As a note to the reader: This restriction is allowed under section 7 of the GPLv3 license (GPL General Public License version 3).

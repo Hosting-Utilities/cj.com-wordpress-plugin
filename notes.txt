@@ -1,0 +1,28 @@
+To update plugin:
+
+Update readme.md
+- update Tested up to
+- Add as needed to changelog
+- Update the upgrade notice at the bottom
+
+Update cj-tracking.php
+- Update CJ_TRACKING_PLUGIN_VERSION
+- Update version number in plugin comments
+
+Replace 3.1 in the following (from from https://www.parorrey.com/blog/wordpress/publishing-updating-wordpress-plugins-to-svn-repository-via-mac-terminal/):
+```
+rm -rf /home/russell/projects/code-for-cj-affiliate-network/trunk/*
+cd /home/russell/projects/code-for-cj-affiliate-network/tags
+cp -R 3.1/* ../trunk/
+svn --username=hostingutilities copy https://plugins.svn.wordpress.org/code-for-cj-affiliate-network/trunk https://plugins.svn.wordpress.org/code-for-cj-affiliate-network/tags/3.1 -m "tagging version 3.1"
+cd ../trunk/
+svn add . --force
+svn commit --username=hostingutilities . -m "releasing 3.1"
+```
+
+what was type is now actionTrackerID but is still stored as type
+
+TODO
+- rewrite unit test
+- combine woocommerce/legacy_save_affiliate_referral_info with init hook firing in the Gravity Form integration that does the same thing
+- The setting "Turn on all available integrations" should be enabled by default. Wasn't enabled after setting up plugin with WooCommerce and then activating GF later
