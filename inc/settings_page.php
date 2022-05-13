@@ -1,6 +1,8 @@
 <?php
 include_once 'integrations.php';
 
+const SHOW_EMAIL_FORM = false;
+
 if (! function_exists('endsWith')){
 	function endsWith($haystack,$needle){ // case insensitive version
 	    $expectedPosition = strlen($haystack) - strlen($needle);
@@ -289,73 +291,94 @@ class CJTrackingSettingsPage
             <?php } ?>
 
 
-            <div style="
-            margin-top: 43px;
-            padding: 19px 36px;
-            background: #fafaf7;
-            border-radius:2px;
-            ">
-                <h2 style="font-size:23px;letter-spacing:.3px;margin-bottom: 12px;">Having a problem?</h2>
-                <h3 style="font-size:14px;margin-bottom: 19px;">Fill out the form below to contact the plugin developer</h3>
-                <form id="feedback-form" class='email-form' data-msg="Your email has been sent. We will get back to you within the next few days.">
-                  <label>From: </label><input value="<?= wp_get_current_user()->user_email ?>" style="border:none;background:transparent;vertical-align:middle;width:calc(100% - 100px);padding-left:2px;" />
-                  <br/>
-                  <label>Message: </label><br/>
-                  <textarea name='body' rows=8 cols=80 required style="margin-top:5px;background:#fbfbf8"></textarea>
-                  <br />
-                  <details>
-                      <summary id=debug-info-summary><small>(some debug info will automatically be appended to your email)</small></summary>
-                      <label for=debug-info style="cursor:default">The following will be added</label>
-                      <?php $debug_info =
-                          "CJ Event Settings: "            . strip_tags( var_export($this->options, true ))
-                        . " <br/><br/>Active Plugins: "    . $this->get_active_plugins_as_html()
-                        . " <br/><br/>Theme: "   . $this->get_theme_as_html()
-                        . " <br/><br/>Is a Multi-Site webSite: " . strip_tags( var_export(is_multisite(), true ))
-                        . " <br/><br/>WordPress Version: " . strip_tags( get_bloginfo('version') );
-                        ?>
-                      <input id='debug-info' value='<?= esc_attr($debug_info) ?>' readonly style="width:calc(100% - 100px);border:1px solid #ddd;">
-                  </details>
-                  <input type=submit class='ow-btn' value='Send Email' style="margin-top:15px;">
-                </form>
-                <style>
-                    .email-form summary::-webkit-details-marker{
-                        color: #aaa;
+            <?php if ( SHOW_EMAIL_FORM ){ ?>
+                <div style="
+                margin-top: 43px;
+                padding: 19px 36px;
+                background: #fafaf7;
+                border-radius:2px;
+                ">
+                    <h2 style="font-size:23px;letter-spacing:.3px;margin-bottom: 12px;">Having a problem?</h2>
+                    <h3 style="font-size:14px;margin-bottom: 19px;">Fill out the form below to contact the plugin developer</h3>
+                    <form id="feedback-form" class='email-form' data-msg="Your email has been sent. We will get back to you within the next few days.">
+                      <label>From: </label><input value="<?= wp_get_current_user()->user_email ?>" style="border:none;background:transparent;vertical-align:middle;width:calc(100% - 100px);padding-left:2px;" />
+                      <br/>
+                      <label>Message: </label><br/>
+                      <textarea name='body' rows=8 cols=80 required style="margin-top:5px;background:#fbfbf8"></textarea>
+                      <br />
+                      <details>
+                          <summary id=debug-info-summary><small>(some debug info will automatically be appended to your email)</small></summary>
+                          <label for=debug-info style="cursor:default">The following will be added</label>
+                          <?php $debug_info =
+                              "CJ Event Settings: "            . strip_tags( var_export($this->options, true ))
+                            . " <br/><br/>Active Plugins: "    . $this->get_active_plugins_as_html()
+                            . " <br/><br/>Theme: "   . $this->get_theme_as_html()
+                            . " <br/><br/>Is a Multi-Site webSite: " . strip_tags( var_export(is_multisite(), true ))
+                            . " <br/><br/>WordPress Version: " . strip_tags( get_bloginfo('version') );
+                            ?>
+                          <input id='debug-info' value='<?= esc_attr($debug_info) ?>' readonly style="width:calc(100% - 100px);border:1px solid #ddd;">
+                      </details>
+                      <input type=submit class='ow-btn' value='Send Email' style="margin-top:15px;">
+                    </form>
+                    <style>
+                        .email-form summary::-webkit-details-marker{
+                            color: #aaa;
+                        }
+                    </style>
+                </div>
+
+                <?php $ajax_nonce = wp_create_nonce( 'cj-tracking-feedback' ); ?>
+
+                <script type="text/javascript" >
+                jQuery('.email-form').submit(function() {
+                  event.preventDefault();
+                  var $form = jQuery(this)
+                  var data = {
+                    'security': '<?php echo $ajax_nonce ?>',
+                    'action': 'cj_tracking_contact_us',
+                    'message': $form.find('textarea').val() + "\n<br/><pre>" + $form.find('#debug-info').val() + '</pre>',
+                    'useremail': '<?php echo wp_get_current_user()->user_email ?>'
+                  };
+
+                  // ajaxurl is always defined in the admin header and points to admin-ajax.php
+                  jQuery.post(ajaxurl, data, function(response) {
+                    if (response === 'success'){
+                        $form.html('<p>'+$form.data('msg')+'</p>')
+                    } else {
+                        console.log(response)
+                        alert('There was an error 😥 Please send me an email directly at russell@wp-overwatch.com.');
+                        throw new Exception('Sending message was not successful')
                     }
-                </style>
-            </div>
 
-            <?php $ajax_nonce = wp_create_nonce( 'cj-tracking-feedback' ); ?>
-
-            <script type="text/javascript" >
-            jQuery('.email-form').submit(function() {
-              event.preventDefault();
-              var $form = jQuery(this)
-              var data = {
-                'security': '<?php echo $ajax_nonce ?>',
-                'action': 'cj_tracking_contact_us',
-                'message': $form.find('textarea').val() + "\n<br/><pre>" + $form.find('#debug-info').val() + '</pre>',
-                'useremail': '<?php echo wp_get_current_user()->user_email ?>'
-              };
-
-              // ajaxurl is always defined in the admin header and points to admin-ajax.php
-              jQuery.post(ajaxurl, data, function(response) {
-                if (response === 'success'){
-                    $form.html('<p>'+$form.data('msg')+'</p>')
-                } else {
-                    console.log(response)
+                }).fail(function(xhr, status, err){
+                    console.log(status + ' ' + err);
+                    console.log(xhr);
                     alert('There was an error 😥 Please send me an email directly at russell@wp-overwatch.com.');
-                    throw new Exception('Sending message was not successful')
-                }
+                });
 
-            }).fail(function(xhr, status, err){
-                console.log(status + ' ' + err);
-                console.log(xhr);
-                alert('There was an error 😥 Please send me an email directly at russell@wp-overwatch.com.');
-            });
+              });
+              </script>
 
-          });
-          </script>
+          <?php } else { ?>
 
+              <div style="
+              margin-top: 43px;
+              padding: 19px 36px;
+              background: #fafaf7;
+              border-radius:2px;
+              ">
+                  <h2 style="font-size:23px;letter-spacing:.3px;margin-bottom: 12px;">Having a problem?</h2>
+                  <h3 style="font-size:14px;margin-bottom: 19px;">Changes to this plugin are now up to you & the rest of the community to make.</h3>
+                  <p>If something isn't working right, you or your developer will need to submit a code fix to
+                      <a href="https://github.com/Hosting-Utilities/cj.com-wordpress-plugin/issues">this github repo.</a>
+                  </p>
+                  <p>If you do not know what implementation to use or what your tag/action tracker/enterprise IDs are,
+                      please reach out to a CJ representative. </p>
+                  <p>For any other questions, you may shoot me an email at <a href="mailto:russell@wordpressoverwatch.com">russell@wordpressoverwatch.com</a>, or use the WordPress support forums.</p>
+              </div>
+
+
+          <?php } ?>
 
         </div>
         <?php
@@ -686,7 +709,7 @@ class CJTrackingSettingsPage
         /* ati stands for action tracker id */
         $tooltip = '<div id="cj-ati-hover-target">Have multiple Action Tracker IDs? ';
         $tooltip .= '<span class="dashicons dashicons-info-outline" id=cj-ati-info-bubble></span>';
-        $tooltip .= '<p id="cj-ati-tooptip">If you have multiple Action Tracker IDs, special configuration will be necessary. Please fill out the form at the bottom of the page, and I will help you through that.</p><br>';
+        $tooltip .= '<p id="cj-ati-tooptip">If you have multiple Action Tracker IDs, special configuration will be necessary. Please shoot me an email at russell@wordpressoverwatch.com, and I will help you through that.</p><br>';
         $tooltip .= '</div><style>';
         /* The tooltip is 1.5em + 22px high inclusing the line height. Line height is 1.5. So we add a paddin-top of 22px here
             ( plus 3px more extra for stylistic reasons)

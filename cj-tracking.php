@@ -1,7 +1,5 @@
 <?php
 /**
- * Main plugin file
- * This plugin is based off the documentation found at https://developers.cj.com/docs
  *
  * Plugin Name:       CJ Tracking Code
  * Description:       Installs the tracking code for the CJ Affiliate network (cj.com)
