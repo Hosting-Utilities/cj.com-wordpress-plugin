@@ -108,11 +108,11 @@ if ( is_admin() ){
     require CJ_TRACKING_PLUGIN_PATH . 'inc/settings_page.php';
     if (wp_doing_ajax()){
         require CJ_TRACKING_PLUGIN_PATH . 'inc/inc.php';
-        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax.php';
-        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax_get_js_from_cj.php';
-        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax_get_site_tag_data.php';
-        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax_get_conversion_tag_data.php';
-        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax_proxy.php';
+        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax/ajax_uninstall.php';
+        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax/ajax_get_js_from_cj.php';
+        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax/ajax_get_site_tag_data.php';
+        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax/ajax_get_conversion_tag_data.php';
+        require CJ_TRACKING_PLUGIN_PATH . 'inc/ajax/ajax_proxy.php';
         return;
     }
     include CJ_TRACKING_PLUGIN_PATH . 'inc/compatability_and_notices.php';

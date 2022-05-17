@@ -1,6 +1,6 @@
 <?php
 
-/* callback for the feedback form */
+/* callback for the feedback form, no longer used */
 function cj_tracking_contact_us_ajax_callback() {
     $current_user = wp_get_current_user();
     $_POST = array_map( 'stripslashes_deep', $_POST ); // necessary because of https://wpartisan.me/tutorials/wordpress-auto-adds-slashes-post-get-request-cookie
