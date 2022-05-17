@@ -91,6 +91,9 @@ class Mock_CJ_Tracking_Order_Product {
     function is_type($type) {
         return $type == 'single';
     }
+    function get_id(){
+        return 'test_product';
+    }
 }
 
 class Mock_CJ_Tracking_Coupon{
@@ -323,6 +326,12 @@ class CJ_Tracking_Tests{
 }
 
 if ( CJ_TRACKING_RUN_UNIT_TESTS === true){
-  CJ_Tracking_Tests::run_all_tests();
-  //CJ_Tracking_Tests::run_test(1); //uncomment to run a specific test
+
+    // Test deprecated pixel implementation
+    {
+      require 'tracking_code.php';
+      CJ_Tracking_Tests::run_all_tests();
+      //CJ_Tracking_Tests::run_test(1); //uncomment to run a specific test
+    }
+
 }

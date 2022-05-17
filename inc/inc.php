@@ -16,6 +16,14 @@ function get_cj_settings(){
       $cj_tracking_note_urls = false;
       $other_params = '';
 
+      $implementation = 'testing';
+      $enterprise_id = 'XXX';
+      $action_tracker_id = 'XXXX';
+      $storage_mechanism = 'cookies';
+      $limit_gravity_forms = false;
+      $enabled_gravity_forms = array();
+      $blank_field_handling = 'report_all_fields';
+
     } else {
       // Get account specific info from DB
 
