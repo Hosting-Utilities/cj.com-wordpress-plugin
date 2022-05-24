@@ -14,7 +14,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Define our constants
-define( 'CJ_TRACKING_PLUGIN_VERSION', "3.2.1" );
+define( 'CJ_TRACKING_PLUGIN_VERSION', "3.2.2" );
 define( 'CJ_TRACKING_RUN_UNIT_TESTS', false );
 define( 'CJ_TRACKING_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CJ_TRACKING_USE_SERVICE_WORKER', false );

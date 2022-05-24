@@ -1,6 +1,6 @@
 <?php
 
-require 'tag_defaults.php';
+require __DIR__ . '/tag_defaults.php';
 
 global $CJ_Site_tag_objects;
 $CJ_Site_tag_objects = [];

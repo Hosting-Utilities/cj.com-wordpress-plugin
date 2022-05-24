@@ -1,5 +1,5 @@
 <?php
-include_once 'integrations.php';
+include_once __DIR__ . '/integrations.php';
 
 const SHOW_EMAIL_FORM = false;
 

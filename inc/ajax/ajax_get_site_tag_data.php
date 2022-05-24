@@ -3,7 +3,7 @@ function cj_site_tag_ajax_callback(){
     global $CJ_Site_tag_objects;
     header('content-type: application/json; charset=utf-8');
 
-    include_once 'tag_functions.php';
+    include_once __DIR__ . '/../tag_functions.php';
     cj_register_integrations();
 
     $ret = cj_get_shared_tag_data();

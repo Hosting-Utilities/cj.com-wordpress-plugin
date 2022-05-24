@@ -2,7 +2,7 @@
 function cj_proxy_ajax_callback(){
     global $cj_proxy_path;
     $cj_proxy_path = $_GET['path'];
-    require 'proxy.php';
+    require __DIR__ . '/../proxy.php';
     exit;
 }
 add_action('wp_ajax_proxy', 'cj_proxy_ajax_callback');

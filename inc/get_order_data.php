@@ -5,7 +5,7 @@
 function get_order_data(){
     global $CJ_Site_tag_objects;
 
-    include_once 'tag_functions.php';
+    include_once __DIR__ . '/tag_functions.php';
 
     cj_register_integrations();
 

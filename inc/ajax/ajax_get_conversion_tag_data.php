@@ -1,7 +1,7 @@
 <?php
 function cj_conversion_tag_ajax_callback(){
     header('content-type: application/json; charset=utf-8');
-    include 'get_order_data.php';
+    include __DIR__ . '/../get_order_data.php';
     echo json_encode(get_order_data());
     exit;
 }
