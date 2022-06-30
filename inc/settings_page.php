@@ -820,6 +820,10 @@ class CJTrackingSettingsPage
             isset( $this->options['cookie_duration'] ) ? $this->options['cookie_duration'] : '120'
         );
         echo '</span>';
+        if (has_filter('cj_cookie_duration')){
+            // TODO color is a random guess, change if necessary, if this callback is ever used again
+            echo '<p style="color:#055">Detected that the cookie duration is being manipulated by a filter. The value inputted below will most likely get overwritten by this filter.</p>';
+        }
 		echo '<span id=cj-cookie-duration-unavailable><p>Use the "<code>wc_session_expiring</code>" and "<code>wc_session_expiration</code>" PHP filters to change how long the cjevent is stored</p></span>'
 
         ?>
@@ -926,6 +930,15 @@ If you would like to send additional data to CJ, you may use the following filte
         // $tag_type will be either 'sitePage' or 'order'
         return $data;
     }, 10, 2);
+</code></pre>
+
+<h3>Changing Cookie duration</h3>
+The duration of the cje cookie can be changed with the following filter.
+<pre><code style="display:block;padding: 8px 9px 7px 9px;">
+    add_filter('cj_cookie_duration', function($default_val){
+        return 365;
+    });
+    }, 10, 1);
 </code></pre>
 
 <h3>Other filters</h3>

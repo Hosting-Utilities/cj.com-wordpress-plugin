@@ -97,6 +97,8 @@ If you need me to add additional filters, please open up a new issue at https://
 - Add server side cookie implementation
 - Allow you to choose which implementation you would like to use. See the settings page for more info on the different implementations.
 - WordPress 6.0 compatibility
+- Fix bug where in certain circumstances it was trying to set the cookie based on the value of the cje GET parameter instead of the cjevent parameter
+- Added the cj_cookie_duration filter
 
 = version 3.2 =
 Add tag ID

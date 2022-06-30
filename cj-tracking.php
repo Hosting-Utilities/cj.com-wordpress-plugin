@@ -129,8 +129,9 @@ if ( is_admin() ){
 } else {
     $settings = get_option('ow_cj_tracking', $default=false);
     function cj_tracking_enqueue_js(){
-        $duration = empty($settings['cookie_duration']) ? 120 : (int)$settings['cookie_duration'];
-        echo "<script>cj_tracking_cookie_duration=$duration</script>";
+        $days = empty($settings['cookie_duration']) ? 120 : (int)$settings['cookie_duration'];
+        $days =  apply_filters('cj_cookie_duration', $days);
+        echo "<script>cj_tracking_cookie_duration=$days</script>";
         wp_enqueue_script('cj-tracking-store-referral-info', plugins_url('/assets/save_affiliate_referral_info.js', CJ_TRACKING_PLUGIN_PATH.'/placeholder'), array(), CJ_TRACKING_PLUGIN_VERSION, true);
     }
     add_filter('wp_enqueue_scripts', 'cj_tracking_enqueue_js');
@@ -194,3 +195,7 @@ if (CJ_IN_PROD){
         ));
     });
 }
+
+add_filter('cj_cookie_duration', function(){
+    return 31 * 13;
+});

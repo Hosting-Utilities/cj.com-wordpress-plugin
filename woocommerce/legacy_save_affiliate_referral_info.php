@@ -16,6 +16,7 @@ function cj_tracking_store_publisher_info(){
 
         $days_in_month = 31;
         $days = empty($settings['cookie_duration']) ? $days_in_month*13 : (int)$settings['cookie_duration'];
+        $days =  apply_filters('cj_cookie_duration', $days);
         $domain = parse_url(home_url())['host'];
         $domain = preg_replace('/^www\./', '', $domain); // remove www in front
         //$use_ssl = preg_match('/.local$/', $domain) ? true : is_ssl(); // only allow non-ssl cookies in dev environments
