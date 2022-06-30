@@ -24,8 +24,8 @@ function cj_tracking_store_publisher_info(){
         if (isset($GET_copy['publishercid']))
             setcookie('publisherCID', $GET_copy['publishercid'], time() + DAY_IN_SECONDS*$days, '/', $domain, $use_ssl, false );
 
-        if (isset($GET_copy['cje']))
-            setcookie('cje', $GET_copy['cje'], time() + DAY_IN_SECONDS*$days, '/', $domain, $use_ssl, $httponly=false );
+        if (isset($GET_copy['cjevent']))
+            setcookie('cje', $GET_copy['cjevent'], time() + DAY_IN_SECONDS*$days, '/', $domain, $use_ssl, $httponly=false );
 
     } else if ($storage_mechanism === 'woo_session') {
 
@@ -37,8 +37,8 @@ function cj_tracking_store_publisher_info(){
         if (isset($GET_copy['publishercid']))
             WC()->session->set('publisherCID', $GET_copy['publishercid']);
 
-        if (isset($GET_copy['cje']))
-            WC()->session->set('cjevent', $GET_copy['cje']);
+        if (isset($GET_copy['cjevent']))
+            WC()->session->set('cjevent', $GET_copy['cjevent']);
 
         if (isset($GET_copy['publisherCID']) || isset($GET_copy['cje']) )
             WC()->session->save_data();
