@@ -71,7 +71,6 @@ function get_order_data(){
          'orderId' => $order_id,
          'actionTrackerId' => $cj_acct_info['action_tracker_id'],
          'currency' => $currency,
-         'amount' => $subtotal,
          'discount' => (float)$discount,
          'cjeventOrder' => $cjevent,
          'sendOrderOnLoad' => ! $manuallySendingOrderRequested,
