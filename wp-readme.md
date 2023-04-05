@@ -2,7 +2,7 @@
 Contributors: russell578
 Tags: affiliate marketing, affiliate, advertising, CJ, Commision Junction
 Requires at least: 4.9.9
-Tested up to: 6.0
+Tested up to: 6.2
 Requires PHP: 5.6
 Stable tag: trunk
 License: Specialized License
@@ -96,9 +96,13 @@ If you need me to add additional filters, please open up a new issue at https://
 = version 3.3 =
 - Add server side cookie implementation
 - Allow you to choose which implementation you would like to use. See the settings page for more info on the different implementations.
-- WordPress 6.0 compatibility
 - Fix bug where in certain circumstances it was trying to set the cookie based on the value of the cje GET parameter instead of the cjevent parameter
 - Added the cj_cookie_duration filter
+- Don't return the amount to CJ as it is no longer required, thanks @brittonk for the fix
+- Don't add notes to WooCommerce orders saying an order came from a CJ referral when it didn't
+- The "Turn on all available integrations" toggle switch can be disabled now
+- Added an expiremntal option for better compatability with Gravity Forms. When selected an alternate method will be used to send data to CJ that won't require breaking the ability for Gravity Forms to redirect users after a form is submitted
+- WordPress 6 compatibility
 
 = version 3.2 =
 Add tag ID
