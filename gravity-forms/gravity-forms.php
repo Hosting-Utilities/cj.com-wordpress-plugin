@@ -24,13 +24,17 @@ class CJ_GF_Tag implements CJTagInterface{
 
     public function isThankYouPage(): bool{
         // return if CJ tracking is not enabled for this form
-        if ( isset($settings['limit_gravity_forms']) && $settings['limit_gravity_forms']){
+        $settings = get_cj_settings();
+        if ( isset($settings['enabled_gravity_forms']) && $settings['enabled_gravity_forms']){
+            $entry = $this->get_entry();
+            if ($entry === null) // ie gform_confirmation filter hasn't fired
+                return false;
             if ( ! isset($settings['enabled_gravity_forms'][$entry['form_id']]) ){
                 return false;
             }
         }
 
-        if (! isset($_POST['gform_ajax']) || ! $this->isPaymentForm() /* don't add CJ tracking code if this is not a payment form e.g. it's a contact form */ )
+        if (! (isset($_POST['gform_ajax']) || isset($_POST['gform_submit']) ) || ! $this->isPaymentForm() /* don't add CJ tracking code if this is not a payment form e.g. it's a contact form */ )
             return false;
 
         // $gform_ajax = array();
