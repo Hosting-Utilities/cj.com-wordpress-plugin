@@ -604,6 +604,19 @@ class CJTrackingSettingsPage
             );
         }
 
+        if ( in_array('Gravity Forms', $this->integrations_installed)
+            && (empty($this->options) || in_array('Gravity Forms', $this->integrations_installed_and_enabled) )
+        ){
+            add_settings_field(
+                'confirmation_message_workaround', // ID
+                'Gravity Forms: Confirmation workaround when redirecting', // Title
+                array( $this, 'confirmation_message_workaround_callback' ), // Callback
+                'ow-cj-tracking-settings-page', // Page
+                'advanced_section', // Section
+                array('label_for'=>'gf_confirmation_workaround')
+            );
+        }
+
         // add_settings_field(
         //     'other_params', // ID
         //     'Include additional params', // Title
@@ -948,17 +961,11 @@ The duration of the cje cookie can be changed with the following filter.
 
     public function auto_detect_integrations_callback()
     {
-        // printf(
-        //     '<input type="checkbox" id="auto_detect_integration" name="ow_cj_tracking[auto_detect_integrations]" value="true" %s />',
-        //     checked( ! isset( $this->options['auto_detect_integrations'] ) || $this->options['auto_detect_integrations'], true, false)
-        // );
-
         printf(
             '<input type="checkbox" class="ow-toggle ow-toggle-enable-disable" id="auto_detect_integration" name="ow_cj_tracking[auto_detect_integrations]" value="true" %s />
             <label for=auto_detect_integration class="ow-toggle-label"></label><br/>',
-            checked( ! isset( $this->options['auto_detect_integrations'] ) || $this->options['auto_detect_integrations'], true, false)
+            checked( ! isset( $this->options['auto_detect_integrations_inverted'] ) || ! $this->options['auto_detect_integrations_inverted'], true, false)
         );
-
     }
 
     public function enable_integrations_callback()
@@ -997,9 +1004,11 @@ The duration of the cje cookie can be changed with the following filter.
                 if ( ! jQuery('#auto_detect_integration').is(':checked') && ! jQuery('#integration_gravityforms').is(':checked') ){
                     document.getElementById('cj-limit-gravity-forms-enabled').parentNode.parentNode.style.display = 'none'
                     document.getElementById('cj-blank-field-handling').parentNode.parentNode.style.display = 'none'
+                    document.getElementById('gf_confirmation_workaround').parentNode.parentNode.style.display = 'none'
                 } else {
                     document.getElementById('cj-limit-gravity-forms-enabled').parentNode.parentNode.style.display = ''
                     document.getElementById('cj-blank-field-handling').parentNode.parentNode.style.display = ''
+                    document.getElementById('gf_confirmation_workaround').parentNode.parentNode.style.display = ''
                 }
             }
             jQuery('#auto_detect_integration, #integration_gravityforms').change(hide_gravity_form_settings_when_disabled)
@@ -1103,6 +1112,15 @@ The duration of the cje cookie can be changed with the following filter.
             ( ! isset( $this->options['blank_field_handling'] ) || $this->options['blank_field_handling'] === 'report_all_fields' ) ? 'selected' : '',
             ( isset( $this->options['blank_field_handling'] ) && $this->options['blank_field_handling'] === 'ignore_blank_fields' ) ? 'selected' : '',
             ( isset( $this->options['blank_field_handling'] ) && $this->options['blank_field_handling'] === 'ignore_0_dollar_items' ) ? 'selected' : ''
+        );
+    }
+
+    public function confirmation_message_workaround_callback(){
+        printf(
+            '<input type="checkbox" id="gf_confirmation_workaround" name="ow_cj_tracking[gf_confirmation_workaround]" value="true" %s />%s',
+            checked( ! isset( $this->options['gf_confirmation_workaround_inverted'] ) || ! $this->options['gf_confirmation_workaround_inverted'], true, false),
+            '<label for=gf_confirmation_workaround> We are currently disabling the ability for all Gravity Forms that send data to CJ to redirect to another page when submitted.
+            Disable this checkbox to enable an expiremental fix that does not require this workaround. The expiremental fix probably does not work, but if it does, let us know so we can make it permament.</label>'
         );
     }
 

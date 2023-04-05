@@ -158,6 +158,29 @@ add_filter( 'gform_confirmation', function($confirmation, $form, $entry, $is_aja
     // Since Gravity Forms loads the confirmation message in an iframe, we need to load the JavaScript again
     $url = admin_url('admin-ajax.php') . '?action=cj_com_js';
 
+    if ( is_array($confirmation) && isset($confirmation['redirect']) ){
+
+        if ( isset($settings['gf_confirmation_workaround']) && $settings['gf_confirmation_workaround']){
+            // By returning a string instead of the confirmation object, 
+            // the current page will load the javascript in our confirmation message instead of redirecting to a different page
+            $confirmation = ''; 
+        } else {
+            // Without the workaround we will redirect, and won't be able to give it any JavaScript to load
+            // So let's attempt to just send the data to CJ right now without using their tag.js API
+            // This is probably not being done correctly, and we will beed feedback from CJ on how to do send them the CJ data server-side
+            $settings = get_cj_settings();
+            $url2 = 'https://www.mczbf.com/tags/' . (isset($settings['tag_id']) ? $settings['tag_id'] : '') . '/tag.js';
+            $response = wp_remote_post( $url2, array('body' => $order) );
+
+            if ( is_wp_error( $response ) ) {
+                $error_message = $response->get_error_message();
+                return "Something went wrong sending data to CJ: $error_message";
+            }
+
+            return;
+        }
+    }
+
     $confirmation .=
 <<<"JS_SCRIPT"
 <script src='$url' id='cjapitag'></script>

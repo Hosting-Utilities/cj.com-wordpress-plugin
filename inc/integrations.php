@@ -13,7 +13,7 @@
 const CJ_ALL_POSSIBLE_INTEGRATIONS = array('WooCommerce', 'Gravity Forms');
 const CJ_INTEGRATION_DESCRIPTIONS = array(
     'WooCommerce'=>'The tracking code will be added to the thank you page.',
-    'Gravity Forms' => 'The tracking info will be sent to CJ when any forms containing a pricing field is submitted.'
+    'Gravity Forms' => 'The tracking info will be sent to CJ when any forms containing a pricing field is submitted.' // Requires the form to show a thank you message (default behavior) instead of redirecting to a thank you page.
 );
 
 interface CJTagInterface{
