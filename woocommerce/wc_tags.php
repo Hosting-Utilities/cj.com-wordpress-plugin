@@ -196,6 +196,8 @@ class CJ_WC_Tag implements CJTagInterface{
         return $ret;
     }
     function notateOrder($data, $debug_mode){
+        if (defined('DOING_AJAX') && $_GET['action']==='cj_conversion_tag_data')
+            return;
         $order_id = $this->getOrderId();
         $order = wc_get_order($order_id);
         if ($debug_mode){
@@ -204,6 +206,7 @@ class CJ_WC_Tag implements CJTagInterface{
                 json_encode($data))
             );
         }
-        $order->add_order_note( sprintf( __("This order was from a CJ.com referral.<br/>---------<br/>DETAILS<p style='margin-left: 0px;'>Action Tracker ID: %s </p><p style='margin-left: 0px;'>CJ Event: %s</p></span>", 'cjtracking'), $data['actionTrackerId'], $data['cjeventOrder']) );
+        if (! empty($data['cjeventOrder']))
+            $order->add_order_note( sprintf( __("This order was from a CJ.com referral.<br/>---------<br/>DETAILS<p style='margin-left: 0px;'>Action Tracker ID: %s </p><p style='margin-left: 0px;'>CJ Event: %s</p></span>", 'cjtracking'), $data['actionTrackerId'], $data['cjeventOrder']) );
     }
 }
