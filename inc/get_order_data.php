@@ -64,7 +64,11 @@ function get_order_data(){
     }
 
     if ($ret['pageType'] !== 'conversionConfirmation'){
-        throw new Exception('Expected a page type of \'conversionConfirmation\' when using the conversion tag ajax endpoint.');
+        foreach($CJ_Site_tag_objects as $obj){
+            if ($obj->isThankYouPage()){
+                throw new Exception('Expected a page type of \'conversionConfirmation\' when using the conversion tag ajax endpoint. Got ' . $ret['pageType']);
+            }
+        }
     }
 
     $ret = array_merge($ret, array(
