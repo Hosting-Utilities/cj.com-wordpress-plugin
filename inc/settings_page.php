@@ -124,11 +124,14 @@ class CJTrackingSettingsPage
         $possible_options = array('report_all_fields', 'ignore_blank_fields', 'ignore_0_dollar_items');
         $new_input['blank_field_handling'] = isset($input['blank_field_handling']) && in_array($input['blank_field_handling'], $possible_options) ? $input['blank_field_handling'] : 'report_all_fields';
 
-        $new_input['auto_detect_integrations'] = isset($input['auto_detect_integrations'])
-                                                ? wp_validate_boolean($input['auto_detect_integrations'])
-                                                /* default to true when we save the form and multiple integrations haven't been introduced yet,
-                                                    so that as soon as a plugin that adds another integration is added we automatically start using it */
-                                                : true;
+        $new_input['gf_confirmation_workaround'] = isset( $input['gf_confirmation_workaround'] ) && $input['gf_confirmation_workaround'];
+        $new_input['gf_confirmation_workaround_inverted'] = ! $new_input['gf_confirmation_workaround'];
+
+        /* Use auto_detect_integrations_inverted so we can default the checkbox to true when we save the form 
+           We need to make sure we default to true when we save the form and multiple integrations haven't been introduced yet,
+           so that as soon as a plugin that adds another integration is added we automatically start using it */
+        $new_input['auto_detect_integrations'] = isset( $input['auto_detect_integrations'] ) && $input['auto_detect_integrations'];
+        $new_input['auto_detect_integrations_inverted'] = ! $new_input['auto_detect_integrations'];
 
         /* When there is only one integration available, then the ability to enable/disable integrations goes away.
             No consider the scenario where one plugin is enabled and the other is disabled, or they could both be disabled.
